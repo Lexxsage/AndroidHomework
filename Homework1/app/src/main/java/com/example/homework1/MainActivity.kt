@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 //val patBirthDate = Pattern.compile("(?:19|20)\\d\\d$")
-                val patBirthDate = Pattern.compile("(20)(?:0|1)(0-9)$")
+                val patBirthDate = Pattern.compile("(20)(?:0|1)\\d$")
                 val matchBirthDate = patBirthDate.matcher(studentString.split(" ")[3])
                 if (!matchBirthDate.find()) {
                     editText.setError("Error: student birth year format")
