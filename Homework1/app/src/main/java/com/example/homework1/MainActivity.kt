@@ -14,7 +14,7 @@ import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
 
-    val studentMMap = mutableMapOf<Int, Student>()
+    val studentMMap = mutableMapOf<Long, Student>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         //enter key processing
         editText.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN){
-                val id = System.currentTimeMillis().toInt()
+                val id = System.currentTimeMillis()
                 val studentString = editText.text.toString()
 
                 if (studentString.split(" ").size  != 4) {
@@ -56,8 +56,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnKeyListener true
                 }
 
-                //val patBirthDate = Pattern.compile("(?:19|20)\\d\\d$")
-                val patBirthDate = Pattern.compile("(20)(?:0|1)(?:0|3)$")
+                val patBirthDate = Pattern.compile("(?:19|20)\\d\\d$")
                 val matchBirthDate = patBirthDate.matcher(studentString.split(" ")[3])
                 if (!matchBirthDate.find()) {
                     editText.setError("Error: student birth year format")
