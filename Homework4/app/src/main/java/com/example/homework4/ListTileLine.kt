@@ -3,14 +3,13 @@ package com.example.homework4
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import com.example.homework4.databinding.ListTileBinding
+import com.example.homework4.databinding.ListTileLineBinding
 
 class ListTileLine @JvmOverloads constructor(
     context: Context,
@@ -21,35 +20,34 @@ class ListTileLine @JvmOverloads constructor(
 
     private val heightOneLine = context.dpToPx(56)
     private val heightTwoLines = context.dpToPx(72)
-    private val titleBaselineOffset = context.dpToPx(32)
-    private val binding: ListTileBinding = ListTileBinding.inflate(
+    private val binding: ListTileLineBinding = ListTileLineBinding.inflate(
         LayoutInflater.from(context),
         this,
         true
     )
 
     var leading: Drawable?
-        get() = binding.leading.drawable
+        get() = binding.leadingline.drawable
         set(value) {
-            binding.leading.apply {
+            binding.leadingline.apply {
                 isVisible = value != null
                 setImageDrawable(value)
             }
         }
-    var title by binding.title::text
+    var title by binding.titleline::text
     var subtitle: CharSequence?
-        get() = binding.subtitle.text
+        get() = binding.subtitleline.text
         set(value) {
             val hasSubtitle = value != null
             binding.root.updateLayoutParams {
                 height = if (hasSubtitle) heightTwoLines else heightOneLine
             }
-            binding.title.apply {
+            binding.titleline.apply {
                 updateLayoutParams<ConstraintLayout.LayoutParams> {
                     verticalBias = if (hasSubtitle) 0f else 0.5f
                 }
             }
-            binding.subtitle.apply {
+            binding.subtitleline.apply {
                 text = value
                 isVisible = hasSubtitle
             }

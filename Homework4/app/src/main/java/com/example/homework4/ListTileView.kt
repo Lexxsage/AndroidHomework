@@ -21,7 +21,6 @@ class ListTileView @JvmOverloads constructor(
 
     private val heightOneLine = context.dpToPx(56)
     private val heightTwoLines = context.dpToPx(72)
-    private val titleBaselineOffset = context.dpToPx(32)
     private val binding: ListTileBinding = ListTileBinding.inflate(
         LayoutInflater.from(context),
         this,
