@@ -1,18 +1,18 @@
+<?xml version ="1.0" encoding ="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/info1"
-        android:title="@string/Info"
+        android:id="@+id/info"
         android:icon="@drawable/ic_info_white"
-        app:showAsAction="always"
-        android:onClick="onCreateDialog"/>
+        android:title="@string/info"
+        app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/home1"
+        android:id="@+id/home"
         android:icon="@drawable/ic_home"
-        app:showAsAction="always"
-        android:title="@string/Home"
-        android:onClick="toastMessage"/>
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -1,79 +1,136 @@
 package com.example.homework4
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.homework4.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.nio.file.Files.size
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: ItemAdapter
-    private val binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        recyclerView = findViewById(R.id.recyclerview)
 
-        val listTile = arrayListOf<ListItem>(
-            ListItem("Квитанции", "- 40 080,55 ₽ ", R.drawable.ic_bill, ItemAdapter.VIEW_TWO),
-            ListItem("Счетчики", "Подайте показания", R.drawable.ic_counter, ItemAdapter.VIEW_TWO),
-            ListItem("Рассрочка", "Сл. платеж 25.02.2018",  R.drawable.ic_installment, ItemAdapter.VIEW_TWO),
-            ListItem("Страхование", "Полис до 12.01.2019",R.drawable.ic_insurance, ItemAdapter.VIEW_TWO),
-            ListItem("Интернет и ТВ", "Баланс 350 ₽",R.drawable.ic_tv, ItemAdapter.VIEW_TWO),
-            ListItem("Домофон", "Подключен", R.drawable.ic_homephone, ItemAdapter.VIEW_TWO),
-            ListItem("Охрана", "Нет", R.drawable.ic_guard, ItemAdapter.VIEW_ONE),
-            ListItem("Контакты УК и служб", "", R.drawable.ic_uk_contacts, ItemAdapter.VIEW_ONE),
-            ListItem("Мои заявки", "",R.drawable.ic_request, ItemAdapter.VIEW_ONE),
-            ListItem("Памятка жителя А101", "",R.drawable.ic_about, ItemAdapter.VIEW_ONE),
+        binding.recyclerview.addItemDecoration(GridSpace(4, 4, 4, 4))
+
+        val list = arrayListOf(
+                PlaceholderItem(
+                        "Квитанции",
+                        "- 40 080,55 ₽ ",
+                        ContextCompat.getDrawable(this, R.drawable.ic_bill),
+                        ListTileAdapter.VIEW_ONE,
+                        true
+                ),
+                PlaceholderItem(
+                        "Счетчики",
+                        "Подайте показания",
+                        ContextCompat.getDrawable(this, R.drawable.ic_counter),
+                        ListTileAdapter.VIEW_ONE,
+                        true
+                ),
+                PlaceholderItem(
+                        "Рассрочка",
+                        "Сл. платеж 25.02.2018",
+                        ContextCompat.getDrawable(this, R.drawable.ic_installment),
+                        ListTileAdapter.VIEW_ONE
+                ),
+                PlaceholderItem(
+                        "Страхование ",
+                        "Полис до 12.01.2019",
+                        ContextCompat.getDrawable(this, R.drawable.ic_insurance),
+                        ListTileAdapter.VIEW_ONE
+                ),
+                PlaceholderItem(
+                        "Интернет и ТВ",
+                        "Баланс 350 ₽",
+                        ContextCompat.getDrawable(this, R.drawable.ic_tv),
+                        ListTileAdapter.VIEW_ONE
+                ),
+                PlaceholderItem(
+                        "Домофон",
+                        "Подключен",
+                        ContextCompat.getDrawable(this, R.drawable.ic_homephone),
+                        ListTileAdapter.VIEW_ONE
+                ),
+                PlaceholderItem(
+                        "Охрана",
+                        "Нет",
+                        ContextCompat.getDrawable(this, R.drawable.ic_guard),
+                        ListTileAdapter.VIEW_TWO
+                ),
+                PlaceholderItem(
+                        "Контакты УК и служб",
+                        null,
+                        ContextCompat.getDrawable(this, R.drawable.ic_uk_contacts),
+                        ListTileAdapter.VIEW_TWO
+                ),
+                PlaceholderItem(
+                        "Мои заявки",
+                        null,
+                        ContextCompat.getDrawable(this, R.drawable.ic_request),
+                        ListTileAdapter.VIEW_TWO
+                ),
+                PlaceholderItem(
+                        "Памятка жителя А101",
+                        null,
+                        ContextCompat.getDrawable(this, R.drawable.ic_about),
+                        ListTileAdapter.VIEW_TWO
+                )
         )
-        adapter = ItemAdapter(this , listTile)
-        binding.recyclerView.adapter = adapter
 
-        binding.recyclerView.layoutManager = GridLayoutManager(this,2).apply {
+        recyclerView.adapter = ListTileAdapter(this, list)
+
+        binding.recyclerview.layoutManager = GridLayoutManager(this, 2).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int) = when (position > 5) {
-                    true -> ItemAdapter.VIEW_TWO
-                    else -> ItemAdapter.VIEW_ONE
+                override fun getSpanSize(position: Int) = when (position) {
+                    in 0..5 -> 1
+                    else -> 2
                 }
             }
         }
 
-        fun onOptionsItemSelected(item: MenuItem): Boolean {
-            when (item.itemId) {
-                R.id.info1 -> {
-                    Toast.makeText(this, "Woop woop!", Toast.LENGTH_SHORT).show()
-                    return true
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.info -> {
+                    MaterialAlertDialogBuilder(this)
+                            .setTitle("Важно")
+                            .setMessage("Ты пидр")
+                            .setPositiveButton("Гыгык")
+                            { dialog, _ -> dialog.cancel() }
+                            .show()
+                    true
                 }
-                R.id.home1 -> {
-                    onCreateDialog()
-                    return true
+                R.id.home -> {
+                    Toast.makeText(
+                            this,
+                            "Woop!",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                    true
                 }
+                else -> super.onOptionsItemSelected(it)
             }
-            return super.onOptionsItemSelected(item)
-        }
-
-        fun toastMessage(item: MenuItem) {
-            Toast.makeText(this, "Woop woop!", Toast.LENGTH_SHORT).show()
-        }
-
-        fun onCreateDialog() {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Важная новость")
-                .setMessage("Ты пидр")
-                .setPositiveButton("Гыгык") { dialog, id ->
-                    dialog.cancel()
-                }
-            builder.show()
         }
     }
 }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Homework4</string>
-    <string name="flat">Моя квартира</string>
-    <string name="Info">Info</string>
-    <string name="Home">Home</string>
+    <string name="title">Title</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="image">Image</string>
+    <string name="info">Info</string>
+    <string name="home">Home</string>
 </resources>
