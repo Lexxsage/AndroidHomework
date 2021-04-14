@@ -15,7 +15,7 @@ class ListTileAdapter(val context: Context, var list:ArrayList<PlaceholderItem>)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_ONE){
             return ListTileViewHolder(
-                ListTile2Binding.inflate(LayoutInflater.from(context),
+                ListTile2Binding.inflate(LayoutInflater.from(parent.context),
                     parent,
                     false)
                 )
